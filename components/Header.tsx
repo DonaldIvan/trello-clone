@@ -4,19 +4,38 @@ import Image from 'next/image';
 import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import Avatar from 'react-avatar';
 import { useBoardStore } from '@/store/BoardStore';
+import { useEffect, useState } from 'react';
+import getSuggestion from '@/lib/getSuggestion';
 
 const blue = '#0055d1';
 
 const Header = () => {
-  const [searchString, setSearchString] = useBoardStore((state) => [
+  const [board, searchString, setSearchString] = useBoardStore((state) => [
+    state.board,
     state.searchString,
     state.setSearchString,
   ]);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [suggestion, setSuggestion] = useState<string>('');
+
+  useEffect(() => {
+    if (board.columns.size === 0) return;
+    setLoading(true);
+
+    const getSuggestionFunc = async () => {
+      const suggestion = await getSuggestion(board);
+      setSuggestion(suggestion);
+      setLoading(false);
+    };
+
+    getSuggestionFunc();
+  }, [board]);
   return (
     <header>
       <div className="flex flex-col items-center rounded-b-2xl bg-gray-500/10 p-5 md:flex-row">
         <div
-          className={`absolute left-0 top-0 h-96 w-full bg-gradient-to-br from-pink-400 to-[${blue}] -z-50 rounded-md opacity-50 blur-3xl filter`}
+          className={`absolute left-0 top-0 -z-50 h-96 w-full rounded-md bg-gradient-to-br from-pink-400 to-[#0055d1] opacity-50 blur-3xl filter`}
         />
         <Image
           src="https://links.papareact.com/c2cdd5"
@@ -45,12 +64,16 @@ const Header = () => {
 
       <div className="flex items-center justify-center px-5 py-2 md:py-5">
         <p
-          className={`flex w-fit max-w-3xl items-center rounded-xl bg-white p-5 pr-5 text-sm font-light italic shadow-xl text-[${blue}]`}
+          className={`flex w-fit max-w-3xl items-center rounded-xl bg-white p-5 pr-5 text-sm font-light italic text-[#0055d1] shadow-xl`}
         >
           <UserCircleIcon
-            className={`mr-1 inline-block h-10 w-10 text-[${blue}]`}
+            className={`mr-1 inline-block h-10 w-10 text-[#0055d1] ${
+              loading ? 'animate-spin' : ''
+            }`}
           />
-          GPT is summarising your task for the day...
+          {suggestion && !loading
+            ? suggestion
+            : 'GPT is summarising your task for the day...'}
         </p>
       </div>
     </header>
