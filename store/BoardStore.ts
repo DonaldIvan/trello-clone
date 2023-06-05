@@ -11,6 +11,12 @@ interface BoardState {
   setBoardState: (board: Board) => void;
   updateTodoInDB: (todo: Todo, columnId: TypedColumn) => void;
   deleteTodo: (taskIndex: number, todo: Todo, id: TypedColumn) => void;
+
+  newTodoInput: string;
+  setNewTodoInput: (input: string) => void;
+
+  newTodoType: TypedColumn;
+  setNewTodoType: (newTodoType: TypedColumn) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
@@ -54,4 +60,10 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       todo.$id,
     );
   },
+
+  newTodoInput: '',
+  setNewTodoInput: (newTodoInput) => set({ newTodoInput }),
+
+  newTodoType: 'todo',
+  setNewTodoType: (newTodoType) => set({ newTodoType }),
 }));

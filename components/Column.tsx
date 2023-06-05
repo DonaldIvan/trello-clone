@@ -3,6 +3,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import TodoCard from '@/components/TodoCard';
 import { useBoardStore } from '@/store/BoardStore';
+import { useModalStore } from '@/store/ModalStore';
 
 interface Props {
   id: TypedColumn;
@@ -21,6 +22,8 @@ const Column = ({ id, todos: partialTodos, index }: Props) => {
   const [searchString] = useBoardStore((state) => [
     state.searchString.toLowerCase().trim(),
   ]);
+
+  const openModal = useModalStore((state) => state.openModal);
   const todos = searchString
     ? partialTodos.filter((todo) =>
         todo.title.toLowerCase().includes(searchString),
@@ -69,8 +72,11 @@ const Column = ({ id, todos: partialTodos, index }: Props) => {
                     </Draggable>
                   ))}
                   {provided.placeholder}
-                  <div>
-                    <button className="flex items-end justify-end p-2">
+                  <div className="flex items-end justify-end p-2">
+                    <button
+                      onClick={openModal}
+                      className="text-green-500 hover:text-green-600"
+                    >
                       <PlusCircleIcon className="h-10 w-10" />
                     </button>
                   </div>
