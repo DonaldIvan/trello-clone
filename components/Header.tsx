@@ -49,7 +49,7 @@ const Header = () => {
             <MagnifyingGlassIcon className="h-6 w-6 text-gray-400" />
             <input
               type="text"
-              placeholder="test"
+              placeholder="Search"
               className="flex-1 p-2 outline-none"
               value={searchString}
               onChange={(e) => setSearchString(e.target.value)}
