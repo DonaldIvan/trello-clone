@@ -2,6 +2,7 @@ import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import TodoCard from '@/components/TodoCard';
+import { useBoardStore } from '@/store/BoardStore';
 
 interface Props {
   id: TypedColumn;
@@ -16,7 +17,15 @@ const idToColumnText: {
   inprogress: 'In Progress',
   done: 'Done',
 };
-const Column = ({ id, todos, index }: Props) => {
+const Column = ({ id, todos: partialTodos, index }: Props) => {
+  const [searchString] = useBoardStore((state) => [
+    state.searchString.toLowerCase().trim(),
+  ]);
+  const todos = searchString
+    ? partialTodos.filter((todo) =>
+        todo.title.toLowerCase().includes(searchString),
+      )
+    : partialTodos;
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (

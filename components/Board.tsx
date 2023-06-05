@@ -21,7 +21,6 @@ const Board = () => {
 
   const handleOnDragEnd = (result: DropResult) => {
     const { destination, source, type } = result;
-    console.log('result', destination, source, type);
     if (!destination) return;
     if (type === 'column') {
       const entries = Array.from(board.columns.entries());

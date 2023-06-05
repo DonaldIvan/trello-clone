@@ -3,6 +3,8 @@ import { getTodosGroupedByColumn } from '@/lib/getTodosGroupedByColumn';
 import { create } from 'zustand';
 
 interface BoardState {
+  searchString: string;
+  setSearchString: (searchString: string) => void;
   board: Board;
   getBoard: () => void;
   setBoardState: (board: Board) => void;
@@ -10,6 +12,8 @@ interface BoardState {
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
+  searchString: '',
+  setSearchString: (searchString) => set({ searchString }),
   board: {
     columns: new Map<TypedColumn, Column>(),
   },
