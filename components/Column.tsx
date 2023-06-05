@@ -34,7 +34,7 @@ const Column = ({ id, todos, index }: Props) => {
                   snapshot.isDraggingOver ? 'bg-green-200' : 'bg-white/50'
                 }`}
               >
-                <h2 className="flex justify-between text-xl font-bold">
+                <h2 className="flex justify-between p-2 text-xl font-bold">
                   {idToColumnText[id]}
                   <span className="rounded-full bg-gray-200 px-2 py-1 text-sm font-normal text-gray-500">
                     {todos.length}
